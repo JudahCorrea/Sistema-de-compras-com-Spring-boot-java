@@ -1,0 +1,17 @@
+version: '3'
+services:
+  db:
+    image: postgres:latest
+    container_name: market_container
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: market_data_base
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
