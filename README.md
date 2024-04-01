@@ -4,6 +4,8 @@ Um sistema de compras baseado em um diagrama de casos de uso e com comunicação
 # Conhecimentos Utilizados 
 * End-points
 * Docker conteiner
+* Conection class
+* three-tier architecture
 
 # Conhecimentos Almejados
 * uniform interface 
