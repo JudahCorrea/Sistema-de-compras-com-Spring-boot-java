@@ -3,12 +3,12 @@ package br.market.market_sistem;
 public class Produto {
 
     private int id;
-    private int preco;
+    private float preco;
     private String nome;
     private String descricao;
     private int estoque;
 
-    public Produto(int id, int preco, String nome, String descricao, int estoque) {
+    public Produto(int id, float preco, String nome, String descricao, int estoque) {
         this.id = id;
         this.preco = preco;
         this.nome = nome;
@@ -20,7 +20,7 @@ public class Produto {
         return this.id;
     }
 
-    public int getPreco() {
+    public float getPreco() {
         return this.preco;
     }
 
@@ -36,7 +36,7 @@ public class Produto {
         return this.estoque;
     }
 
-    public void setPreco(int preco) {
+    public void setPreco(float preco) {
         this.preco = preco;
     }
 
