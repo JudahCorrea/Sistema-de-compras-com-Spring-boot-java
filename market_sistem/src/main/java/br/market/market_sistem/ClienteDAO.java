@@ -33,7 +33,8 @@ public class ClienteDAO {
         connection.close();
 
         }catch(SQLException | URISyntaxException exception){
-            throw new RuntimeException("Erro ao buscar Cliente por email e senha", exception);
+            //throw new RuntimeException("Erro ao buscar Cliente por email e senha", exception);
+            c = null;
         }
         if(c != null){
             return true;

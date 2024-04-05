@@ -34,7 +34,8 @@ public class LojistaDAO {
             connection.close();
 
         }catch(SQLException | URISyntaxException exception){
-            throw new RuntimeException("Erro ao buscar lojista por email e senha", exception);
+            //throw new RuntimeException("Erro ao buscar lojista por email e senha", exception);
+            l = null;
         }
 
         if(l != null){

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 /**
  * Conexao
+ * Links de Apoio : https://www.commandprompt.com/education/how-to-create-a-postgresql-database-in-docker/
  */
 public class Conexao {
 
