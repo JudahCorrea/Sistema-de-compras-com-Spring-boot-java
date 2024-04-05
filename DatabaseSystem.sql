@@ -1,4 +1,4 @@
--- criação das tabelas do sistema
+-- criando as tabelas do sistema
 CREATE TABLE IF NOT EXISTS Cliente(
 	id_cliente SERIAL PRIMARY KEY,
 	nome TEXT,

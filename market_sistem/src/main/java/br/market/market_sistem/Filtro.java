@@ -9,8 +9,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
-@WebFilter // adicionar URI que irá passar pelo filtro
+@WebFilter(urlPatterns = {"/portal_cliente.html", "/portal_logista.html"}) // adicionar URI que irá passar pelo filtro
 public class Filtro implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException{
@@ -19,8 +22,23 @@ public class Filtro implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        // trata a URI identificada pelo filtro
+
+        HttpServletRequest request = ((HttpServletRequest) servletRequest);
+        HttpServletResponse response = ((HttpServletResponse) servletResponse);
+
+
+        HttpSession session = request.getSession(false);
+
+        if(session == null){
+            response.sendRedirect("login.html?msg=precisa_está_logado!");
+        }else{
+            Boolean logado = (Boolean) session.getAttribute("logado");
+            if(!logado || logado == null){
+                response.sendRedirect("login.html?msg=precisa_está_logado!");
+            }
+        }
         
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

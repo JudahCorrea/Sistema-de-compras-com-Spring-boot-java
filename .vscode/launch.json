@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MarketSistemApplication<market_sistem>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "br.market.market_sistem.MarketSistemApplication",
+            "projectName": "market_sistem",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
