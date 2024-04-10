@@ -8,6 +8,10 @@ public class Produto {
     private String descricao;
     private int estoque;
 
+    public Produto(){
+        
+    }
+
     public Produto(int id, float preco, String nome, String descricao, int estoque) {
         this.id = id;
         this.preco = preco;
@@ -46,6 +50,10 @@ public class Produto {
     
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public void setEstoque(int estoque){
+        this.estoque = estoque;
     }
 
     public void incrementaEstoque() {
