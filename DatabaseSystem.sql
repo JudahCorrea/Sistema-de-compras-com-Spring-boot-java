@@ -33,6 +33,12 @@ INSERT INTO Lojista (nome, email, senha) VALUES
 ('Taniro Rodrigues', 'tanirocr@gmail.com', '123456abc'),
 ('Lorena Silva', 'lore_sil@yahoo.com.br', '12uhuuu@');
 
+-- inserindo alguns cadastros previamente para produto
+INSERT INTO Produto (nome, preco, descricao, estoque) VALUES
+('Mesa', 500.00, 'Uma mesa de computador', 10),
+('Lápis', 2.00, 'Lápis B2 grafite', 50),
+('Computador', 1.500, 'Computador I5 16Gb de RAM', 2);
+
 -- observando localmente os dados para testar o funcionamento do sistema
 SELECT *
 FROM Cliente
