@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,5 +8,11 @@
 <body>
     <head><h1>Bem vindo ao portal do Logista!</h1></head>
     <a href="/logout">Deslogar</a>
+
+    <!--Cadastro de produtos-->
+    <form action="/redirecCadastro" method="get">
+        <button type="submit">Cadastrar Produtos</button>
+    </form>
+    
 </body>
 </html>
