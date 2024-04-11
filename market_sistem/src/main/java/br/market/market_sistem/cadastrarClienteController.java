@@ -27,7 +27,7 @@ public class cadastrarClienteController {
             response.sendRedirect("login.html");
         }
         else{
-            response.sendRedirect("cadastroCliente.html?msg=email ja cadastrado");
+            response.sendRedirect("cadastro_cliente.html?msg=email ja cadastrado");
         }
     }
 }
