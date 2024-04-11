@@ -39,7 +39,7 @@ public class loginController {
             return;
         }
 
-        response.sendRedirect("login.html?msg=login_falhou");
+        response.sendRedirect("login.html?msg=login falhou");
     }
 
     @GetMapping("/logout")
@@ -48,6 +48,6 @@ public class loginController {
         if (session != null) {
             session.invalidate(); // Invalida a sessão apenas se existir
         }
-        response.sendRedirect("login.html?msg=Usuario deslogado");
+        response.sendRedirect("login.html?msg=usuario deslogado");
     }
 }
