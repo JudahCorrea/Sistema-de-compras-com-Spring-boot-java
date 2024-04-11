@@ -35,9 +35,9 @@ INSERT INTO Lojista (nome, email, senha) VALUES
 
 -- inserindo alguns cadastros previamente para produto
 INSERT INTO Produto (nome, preco, descricao, estoque) VALUES
-('Mesa', 500.00, 'Uma mesa de computador', 10),
-('Lápis', 2.00, 'Lápis B2 grafite', 50),
-('Computador', 1.500, 'Computador I5 16Gb de RAM', 2);
+(500.00,'Mesa', 'Uma mesa de computador', 10),
+(2.00,'Lápis', 'Lápis B2 grafite', 50),
+(1500.00,'Computador', 'Computador I5 16Gb de RAM', 2);
 
 -- observando localmente os dados para testar o funcionamento do sistema
 SELECT *
