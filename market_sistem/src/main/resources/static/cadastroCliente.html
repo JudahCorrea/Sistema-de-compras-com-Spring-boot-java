@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Market Sistem</title>
+    <title>Cadastro Cliente</title>
 </head>
 <body style="margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden;">
 <div style="text-align: center;">
     <header>
-        <h1>Sistem Login</h1>
+        <h1>Formulário de Cadastro</h1>
     </header>
-    <form action="/logar" method="post" style="display: flex; flex-direction: column; align-items: center; padding: 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
+    <form action="/cadastroCliente" method="post" style="display: flex; flex-direction: column; align-items: center; padding: 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <label for="nome" style="min-width: 80px; margin-right: 10px; font-size: 18px">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+        </div>
         <div style="display: flex; align-items: center; margin-bottom: 10px;">
             <label for="email" style="min-width: 80px; margin-right: 10px; font-size: 18px">Email:</label>
             <input type="email" id="email" name="email" required>
@@ -19,8 +23,7 @@
             <label for="password" style="min-width: 80px; margin-right: 10px; font-size: 18px">Senha:</label>
             <input type="password" id="password" name="password" required>
         </div>
-        <p style="font-size: 12px">Você é cliente e não possui cadastro? <a href="/cadastroCliente.html">Cadastre-se aqui</a></p>
-        <button type="submit" style="margin-top: 10px; width: 80px; height: 30px; border: 1px solid #696969;border-radius: 3px; cursor: pointer">Logar</button>
+        <button type="submit" style="margin-top: 10px; width: 80px; height: 30px; border: 1px solid #696969;border-radius: 3px; cursor: pointer">Cadastrar</button>
     </form>
 </div>
 </body>
