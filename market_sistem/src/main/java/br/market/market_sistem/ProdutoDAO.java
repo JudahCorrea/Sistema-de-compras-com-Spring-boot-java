@@ -32,7 +32,7 @@ public class ProdutoDAO {
         }
     }
 
-    public List<Produto> listar(){
+    public List<Produto> listarProdutos(){
         Connection connection = null;
         PreparedStatement p = null;
         ResultSet r = null;

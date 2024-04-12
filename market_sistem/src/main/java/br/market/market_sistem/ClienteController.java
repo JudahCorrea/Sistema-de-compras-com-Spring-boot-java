@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.io.IOException;
 
 @Controller
-public class cadastrarClienteController {
+public class ClienteController {
     @PostMapping("/cadastroCliente")
     public void cadastrarCliente(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         var nome = request.getParameter("nome");
