@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpSession;
 
 
 @Controller
-public class loginController {
+public class LoginController {
 
     @PostMapping("/logar")
     public void doLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
@@ -30,7 +30,7 @@ public class loginController {
 
         if(confirm_c){   
             session.setAttribute("logado", true);
-            response.sendRedirect("portal_cliente.html");  
+            response.sendRedirect("portal_cliente.html");
             return;
         }
         if(confirm_l){
