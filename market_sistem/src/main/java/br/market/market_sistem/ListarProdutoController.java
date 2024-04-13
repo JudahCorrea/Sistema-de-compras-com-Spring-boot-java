@@ -108,7 +108,7 @@ public class ListarProdutoController {
                 writer.println("<td>Sem estoque</td>");
             else
                 //colocar o href
-                writer.println("<td><a href=>Adicionar</a></td>");
+                writer.println("<td><a href=/addCarrinho?id="+produto.getId()+">Adicionar</a></td>");
             writer.println("</tr>");
         }
 
