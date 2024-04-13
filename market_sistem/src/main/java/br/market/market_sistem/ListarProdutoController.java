@@ -100,15 +100,15 @@ public class ListarProdutoController {
 
         for(Produto produto : listaDeProdutos){
             writer.println("<tr>");
-            writer.println("<td>"+ produto.getNome() + "</td>");
-            writer.println("<td>"+ produto.getDescricao() + "</td>");
-            writer.println("<td>"+ produto.getPreco() + "</td>");
-            writer.println("<td>"+ produto.getEstoque() + "</td>");
+            writer.println("<td>" + produto.getNome() + "</td>");
+            writer.println("<td>" + produto.getDescricao() + "</td>");
+            writer.println("<td>" + produto.getPreco() + "</td>");
+            writer.println("<td>" + produto.getEstoque() + "</td>");
             if(produto.getEstoque() == 0)
                 writer.println("<td>Sem estoque</td>");
             else
                 //colocar o href
-                writer.println("<td><a href=/addCarrinho?id="+produto.getId()+">Adicionar</a></td>");
+                writer.println("<td><a href=/addNoCarrinho/id=" + produto.getId() + ">Adicionar</a></td>");
             writer.println("</tr>");
         }
 
