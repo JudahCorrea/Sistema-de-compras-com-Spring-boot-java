@@ -17,10 +17,9 @@ public class VerCarrinhoController {
     }
 
     @GetMapping("/addNoCarrinho/{id}")
-    public void addNoCarrinho(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        String id = request.getParameter("id");
+    public void addNoCarrinho(String id, HttpServletRequest request, HttpServletResponse response) throws IOException{
 
-        Cookie c = new Cookie("carrinho",id );
+        Cookie c = new Cookie("carrinho", id);
         c.setMaxAge(172800);
         response.addCookie(c);
     }
