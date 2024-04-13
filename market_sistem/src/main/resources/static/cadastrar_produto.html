@@ -5,19 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Produto</title>
 </head>
-<body>
-    <header>
-        <h1>Cadastre seu Produto</h1>
-    </header>
-    
-    <form action="/cadastrarProduto" method="post">
-        Nome do produto: <input type="text" name="nome"><br>
-        Descrição: <input type="text" name="descricao"><br>
-        Preco: <input type="number" name="preco"><br>
-        Quantidade em estoque: <input type="number" name="estoque"><br>
-        <button type="submit">Cadastrar</button>
-    </form>
+<body style="margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden;">
+    <div style="text-align: center;">
+        <header>
+            <h1>Cadastre seu produto</h1>
+        </header>
 
-
+        <form action="/cadastrarProduto" method="post" style="display: flex; flex-direction: column; align-items: center; padding: 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
+            Nome do produto <input type="text" name="nome"><br>
+            Descrição <input type="text" name="descricao"><br>
+            Preço <input type="number" name="preco"><br>
+            Quantidade em estoque <input type="number" name="estoque"><br>
+            <button type="submit" style="margin-top: 2px; width: 80px; height: 30px; border: 1px solid #696969;border-radius: 3px; cursor: pointer">Cadastrar</button>
+        </form>
+        <a href="/redirectPortalLojista">Retornar</a>
+    </div>
 </body>
 </html>

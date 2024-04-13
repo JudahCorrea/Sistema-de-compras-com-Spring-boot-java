@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
@@ -29,5 +30,10 @@ public class ClienteController {
         else{
             response.sendRedirect("cadastro_cliente.html?msg=email ja cadastrado");
         }
+    }
+
+    @GetMapping("/redirectLogin")
+    public void retornarPaginaLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.sendRedirect("login.html");
     }
 }

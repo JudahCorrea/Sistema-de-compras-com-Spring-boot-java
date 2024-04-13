@@ -5,17 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal do Logista</title>
 </head>
-<body>
-    <head><h1>Bem vindo ao portal do Logista!</h1></head>
-    <a href="/logout">Deslogar</a>
+<body style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+    <head>
+        <h1>Bem vindo ao portal do logista!</h1>
+    </head>
 
     <!--Cadastro de produtos-->
-    <form action="/redirectCadastro" method="get">
+    <form action="/redirectCadastro" method="get" style="display: flex; flex-direction: column; align-items: center; margin-top: 30px; margin-bottom: 8px">
         <button type="submit">Cadastrar Produtos</button>
     </form>
-    
-    <form action="/listarProdutos" method="get">
-        <button type="submit">Listar</button>
+
+    <form action="/listarProdutos" method="get" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 8px">
+        <button type="submit">Listar Produtos</button>
     </form>
+
+    <a href="/logout">Deslogar</a>
 </body>
 </html>
