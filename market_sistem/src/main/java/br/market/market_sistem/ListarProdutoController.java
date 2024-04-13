@@ -51,7 +51,7 @@ public class ListarProdutoController {
 
         var writer = response.getWriter();
 
-        writer.println("<html><head><title>Produtos Cadastrados</title><head><body><header><h1>Lista de Produtos</h1></header><br><table border='1'>");
+        writer.println("<html><head><title>Produtos Cadastrados</title><head><body style='display: flex; flex-direction: column; align-items: center;'><header style='margin-bottom: 20px;'><h1>Lista de Produtos</h1></header><br><table border='1' style='margin-top: 0px;'>");
         writer.println("<tr>");
         writer.println("<th>Nome");
         writer.println("<th>Descrição");
@@ -69,16 +69,15 @@ public class ListarProdutoController {
         }
         writer.println("</table>");
         writer.println("<br>");
-        writer.println("<form action='/redirectPortalLojista' method='get'><button type='submit'>Retornar</button></form>");
+        writer.println("<a href='/redirectPortalLojista'>Retornar<a>");
         writer.println("</body></html>");
     }
 
-
-    @GetMapping("/redirectPortalCliente")
-    public void redirectPortalCliente(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @GetMapping("/redirectPortalLojista")
+    public void redirectPortalLojista(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         if(session != null){
-            response.sendRedirect("portal_cliente.html");
+            response.sendRedirect("portal_logista.html");
         }else{
             response.sendRedirect("login.html");
         }
@@ -90,7 +89,7 @@ public class ListarProdutoController {
         List<Produto> listaDeProdutos = pDAO.listarProdutos();
 
         var writer = response.getWriter();
-        writer.println("<html><head><title>Página Produtos</title><head><body><header><h1>Lista Produtos</h1></header><br><table border='1'>");
+        writer.println("<html><head><title>Página Produtos</title><head><body style='display: flex; flex-direction: column; align-items: center;'><header 'margin-bottom: 20px;'><h1>Lista Produtos</h1></header><br><table border='1' style='margin-top: 0px;'>");
         writer.println("<tr>");
         writer.println("<th>Nome</th>");
         writer.println("<th>Descrição</th>");
@@ -106,29 +105,27 @@ public class ListarProdutoController {
             writer.println("<td>"+ produto.getPreco() + "</td>");
             writer.println("<td>"+ produto.getEstoque() + "</td>");
             if(produto.getEstoque() == 0)
-                writer.println("<th>Sem estoque");
+                writer.println("<td>Sem estoque</td>");
             else
                 //colocar o href
-                writer.println("<th><a href=>Adicionar</a>");
+                writer.println("<td><a href=>Adicionar</a></td>");
             writer.println("</tr>");
         }
 
         writer.println("</table>");
+        writer.println("<a href='/VerCarrinho'>Ver carrinho</a>");
         writer.println("<br>");
-        writer.println("<form action='/redirectPortalCliente' method='get'><button type='submit'>Retornar</button></form>");
+        writer.println("<a href='/redirectPortalCliente'>Retornar<a>");
         writer.println("</body></html>");
-
     }
 
-    @GetMapping("/redirectPortalLojista")
-    public void redirectPortalLojista(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @GetMapping("/redirectPortalCliente")
+    public void redirectPortalCliente(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         if(session != null){
-            response.sendRedirect("portal_logista.html");
+            response.sendRedirect("portal_cliente.html");
         }else{
             response.sendRedirect("login.html");
         }
     }
-    
-    
 }
