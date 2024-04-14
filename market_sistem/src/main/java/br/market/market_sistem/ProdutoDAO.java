@@ -44,13 +44,34 @@ public class ProdutoDAO {
             r = p.executeQuery();
 
             while(r.next()){
-                Produto pr = new Produto(r.getInt("id_produto"), r.getFloat("preco"), r.getString("nome"), r.getString("descricao"), r.getInt("estoque"));
-                lista.add(pr);
+                Produto produto = new Produto(r.getInt("id_produto"), r.getFloat("preco"), r.getString("nome"), r.getString("descricao"), r.getInt("estoque"));
+                lista.add(produto);
             }
 
         }catch(SQLException | URISyntaxException exception){
             throw new RuntimeException("Erro ao listar produto", exception);
         }
         return lista;
+    }
+
+    public Produto getProdutoById(int id){
+        Connection connection = null;
+        PreparedStatement p = null;
+        ResultSet r = null;
+        Produto produto = null;
+        try{
+            connection = Conexao.getConnection();
+            p = connection.prepareStatement("SELECT * FROM Produto WHERE id_produto = ?");
+            p.setInt(1, id);
+            r = p.executeQuery();
+
+            while(r.next()){
+                Produto pr = new Produto(r.getInt("id_produto"), r.getFloat("preco"), r.getString("nome"), r.getString("descricao"), r.getInt("estoque"));
+                produto = pr;
+            }
+        }catch(SQLException | URISyntaxException exception){
+            throw new RuntimeException("Erro ao buscar produto", exception);
+        }
+        return produto;
     }
 }
