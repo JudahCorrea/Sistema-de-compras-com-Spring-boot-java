@@ -15,7 +15,7 @@ public class LojistaDAO {
 
     }
     
-    public boolean confirmLojistaCredentials(String email, String password){
+    public Lojista confirmLojistaCredentials(String email, String password){
         Connection connection = null;
         PreparedStatement p = null;
         ResultSet rs = null;
@@ -41,9 +41,6 @@ public class LojistaDAO {
             l = null;
         }
 
-        if(l != null){
-            return true;
-        }
-        return false;
+        return l;
     }
 }

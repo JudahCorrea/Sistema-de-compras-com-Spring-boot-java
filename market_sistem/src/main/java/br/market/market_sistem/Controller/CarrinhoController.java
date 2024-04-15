@@ -2,29 +2,59 @@ package br.market.market_sistem.Controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.Enumeration;
+import java.util.List;
 import br.market.market_sistem.Model.Carrinho;
 import br.market.market_sistem.Model.Produto;
 import br.market.market_sistem.Model.ProdutoDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jms.JmsProperties.Listener.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class CarrinhoController {
 
 //    @Autowired
     private Carrinho carrinho = new Carrinho();
-
+    //tentativa de salvar no cookie
     @GetMapping("/addNoCarrinho/{id}")
     public void addNoCarrinho(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        //decalrando o que vou precisar
+        HttpSession session = request.getSession(false);
+        Enumeration<String> email_session = session.getAttributeNames();
+        String email_validado = email_session.nextElement();
+        Cookie[] cookies = request.getCookies();
+        List<String> carrinho = new ArrayList<String>();
+        carrinho.add(id.replaceAll("[^0-9]", ""));
+        //adicionando os cookies existentes ao arraylist e deletando os cookies
+        if(cookies != null){
+            for(Cookie cookie : cookies){
+                if(cookie.getName().equals(email_validado.replace("@", "-"))){
+                    String id_produto = cookie.getValue();
+                    carrinho.add(id_produto);
+                    cookie.setMaxAge(0);
+                }
+            }
+        }
+        //adicionando um cookie derivado de cada elemneto do array list, incluindo o novo elemento adicionado
+        for(String id_produto : carrinho){
+            Cookie c = new Cookie(email_validado.replace("@", "-"), id_produto);
+            c.setMaxAge(48 * 60 * 60);
+            response.addCookie(c);
+        }
 
+        response.sendRedirect("/listarProdutosCliente");
+    }
+    /*
+    
 //        int idInt = Integer.parseInt(id);
 //        Carrinho carrinho = new Carrinho();
 //        ProdutoDAO pDAO = new ProdutoDAO();
@@ -58,6 +88,7 @@ public class CarrinhoController {
             //System.out.println(carrinho.getProdutos());
 
     }
+     */
 
 
     public void salvarCarrinhoNoCookie(Carrinho carrinho, HttpServletRequest request, HttpServletResponse response) throws IOException {

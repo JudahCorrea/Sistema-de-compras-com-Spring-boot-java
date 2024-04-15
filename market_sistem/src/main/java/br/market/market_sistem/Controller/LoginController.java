@@ -2,7 +2,9 @@ package br.market.market_sistem.Controller;
 
 import java.io.IOException;
 
+import br.market.market_sistem.Model.Cliente;
 import br.market.market_sistem.Model.ClienteDAO;
+import br.market.market_sistem.Model.Lojista;
 import br.market.market_sistem.Model.LojistaDAO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,18 +27,18 @@ public class LoginController {
         ClienteDAO c = new ClienteDAO();
         LojistaDAO l = new LojistaDAO();
 
-        boolean confirm_c = c.confirmClienteCredentials(email, password);
-        boolean confirm_l = l.confirmLojistaCredentials(email, password);
+        Cliente confirm_c = c.confirmClienteCredentials(email, password);
+        Lojista confirm_l = l.confirmLojistaCredentials(email, password);
 
         HttpSession session = request.getSession(true);// criando sessão
 
-        if(confirm_c){   
-            session.setAttribute("logado", true);
+        if(confirm_c != null){   
+            session.setAttribute(confirm_c.getEmail(), true);
             response.sendRedirect("portal_cliente.html");
             return;
         }
-        if(confirm_l){
-            session.setAttribute("logado", true);
+        if(confirm_l != null){
+            session.setAttribute(confirm_l.getEmail(), true);
             response.sendRedirect("portal_logista.html");
             return;
         }

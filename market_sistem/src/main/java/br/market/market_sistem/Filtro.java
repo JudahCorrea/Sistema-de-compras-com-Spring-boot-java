@@ -1,6 +1,7 @@
 package br.market.market_sistem;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -28,11 +29,13 @@ public class Filtro implements Filter {
 
 
         HttpSession session = request.getSession(false);
+        Enumeration<String> email_session = session.getAttributeNames();
+        String email_validado = email_session.nextElement();
 
         if(session == null){
             response.sendRedirect("login.html?msg=precisa_está_logado!");
         }else{
-            Boolean logado = (Boolean) session.getAttribute("logado");
+            Boolean logado = (Boolean) session.getAttribute(email_validado);
             if(!logado || logado == null){
                 response.sendRedirect("login.html?msg=precisa_está_logado!");
             }

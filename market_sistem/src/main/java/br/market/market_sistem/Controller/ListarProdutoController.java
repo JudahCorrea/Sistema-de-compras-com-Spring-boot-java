@@ -116,7 +116,6 @@ public class ListarProdutoController {
                 else {
                     //writer.println("<td><a href=/addNoCarrinho/id=" + produto.getId() + ">Adicionar</a></td>");
                     writer.println("<td><a href=/addNoCarrinho/id=" + produto.getId() + " title='http://localhost:8080/MarketSistemApplication/addNoCarrinho?id=" + produto.getId() + "&comando=add'>Adicionar</a></td>");
-                    System.out.println("Estou no ListarProdutoController id " + produto.getId());
                 }
                     //colocar o href
 
