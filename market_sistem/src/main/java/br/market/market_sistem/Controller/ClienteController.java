@@ -1,5 +1,7 @@
-package br.market.market_sistem;
+package br.market.market_sistem.Controller;
 
+import br.market.market_sistem.Model.Cliente;
+import br.market.market_sistem.Model.ClienteDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,6 +33,7 @@ public class ClienteController {
             response.sendRedirect("cadastro_cliente.html?msg=email ja cadastrado");
         }
     }
+
 
     @GetMapping("/redirectLogin")
     public void retornarPaginaLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {

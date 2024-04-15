@@ -1,4 +1,4 @@
-package br.market.market_sistem;
+package br.market.market_sistem.Model;
 
 import java.net.URISyntaxException;
 import java.sql.*;

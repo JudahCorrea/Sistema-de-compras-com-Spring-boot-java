@@ -1,4 +1,7 @@
-package br.market.market_sistem;
+package br.market.market_sistem.Model;
+
+import br.market.market_sistem.Model.Conexao;
+import br.market.market_sistem.Model.Produto;
 
 import java.net.URISyntaxException;
 import java.sql.Connection;
@@ -44,8 +47,8 @@ public class ProdutoDAO {
             r = p.executeQuery();
 
             while(r.next()){
-                Produto produto = new Produto(r.getInt("id_produto"), r.getFloat("preco"), r.getString("nome"), r.getString("descricao"), r.getInt("estoque"));
-                lista.add(produto);
+                Produto pr = new Produto(r.getInt("id_produto"), r.getFloat("preco"), r.getString("nome"), r.getString("descricao"), r.getInt("estoque"));
+                lista.add(pr);
             }
 
         }catch(SQLException | URISyntaxException exception){
@@ -74,4 +77,5 @@ public class ProdutoDAO {
         }
         return produto;
     }
+
 }

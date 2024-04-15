@@ -1,4 +1,7 @@
-package br.market.market_sistem;
+package br.market.market_sistem.Model;
+
+import br.market.market_sistem.Model.Conexao;
+import br.market.market_sistem.Model.Lojista;
 
 import java.net.URISyntaxException;
 import java.sql.Connection;

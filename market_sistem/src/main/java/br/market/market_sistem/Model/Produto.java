@@ -1,4 +1,4 @@
-package br.market.market_sistem;
+package br.market.market_sistem.Model;
 
 public class Produto {
 
@@ -11,6 +11,7 @@ public class Produto {
     public Produto(){
         
     }
+
 
     public Produto(int id, float preco, String nome, String descricao, int estoque) {
         this.id = id;

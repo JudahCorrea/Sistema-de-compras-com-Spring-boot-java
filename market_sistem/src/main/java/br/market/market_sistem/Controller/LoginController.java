@@ -1,7 +1,9 @@
-package br.market.market_sistem;
+package br.market.market_sistem.Controller;
 
 import java.io.IOException;
 
+import br.market.market_sistem.Model.ClienteDAO;
+import br.market.market_sistem.Model.LojistaDAO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
