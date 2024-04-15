@@ -28,4 +28,33 @@ public class VerCarrinhoController {
         response.addCookie(c);
 
     }
+
+    /* metodo - addNoCarrinho(){
+
+        CONDIÇÔES A SEREM ATENDIDAS: 
+
+        SE existe cookie {
+            pega cookie
+            transforma em ArrayList Produto
+            add Produto ao ArrayList Produto
+            transforma em cookie
+            adiciona aos Cookies
+        }
+        SE NÂO existe cookie {
+            cria um novo cookie
+            cria um ArrayList Produto
+            add Produto ao ArrayList Produto
+            transforma em cookie
+            adiciona aos Cookies
+        }
+
+        CASOS ALTERNATIVOS:
+
+        - problemas com session
+        - "troca" de paginas
+        - usar filtro ?
+
+    }
+    
+    */ 
 }
