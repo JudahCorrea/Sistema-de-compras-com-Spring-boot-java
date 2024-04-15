@@ -1,14 +1,18 @@
-package br.market.market_sistem;
+package br.market.market_sistem.Controller;
 
 import java.io.IOException;
 import java.util.List;
+
+import br.market.market_sistem.Model.Produto;
+import br.market.market_sistem.Model.ProdutoDAO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @Controller
@@ -83,40 +87,53 @@ public class ListarProdutoController {
         }
     }
 
-    @GetMapping("/listarProdutosCliente")
+    @RequestMapping(value = "/listarProdutosCliente", method = RequestMethod.GET)
     public void listarProdutoCliente(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ProdutoDAO pDAO = new ProdutoDAO();
-        List<Produto> listaDeProdutos = pDAO.listarProdutos();
 
-        var writer = response.getWriter();
-        writer.println("<html><head><title>Página Produtos</title><head><body style='display: flex; flex-direction: column; align-items: center;'><header 'margin-bottom: 20px;'><h1>Lista Produtos</h1></header><br><table border='1' style='margin-top: 0px;'>");
-        writer.println("<tr>");
-        writer.println("<th>Nome</th>");
-        writer.println("<th>Descrição</th>");
-        writer.println("<th>Preço</th>");
-        writer.println("<th>Estoque</th>");
-        writer.println("<th>Carrinho</th>");
-        writer.println("</tr>");
+        HttpSession session = request.getSession(false);
+        if(session != null){
+            ProdutoDAO pDAO = new ProdutoDAO();
+            List<Produto> listaDeProdutos = pDAO.listarProdutos();
 
-        for(Produto produto : listaDeProdutos){
+            var writer = response.getWriter();
+            writer.println("<html><head><title>Página Produtos</title><head><body style='display: flex; flex-direction: column; align-items: center;'><header 'margin-bottom: 20px;'><h1>Lista Produtos</h1></header><br><table border='1' style='margin-top: 0px;'>");
             writer.println("<tr>");
-            writer.println("<td>" + produto.getNome() + "</td>");
-            writer.println("<td>" + produto.getDescricao() + "</td>");
-            writer.println("<td>" + produto.getPreco() + "</td>");
-            writer.println("<td>" + produto.getEstoque() + "</td>");
-            if(produto.getEstoque() == 0)
-                writer.println("<td>Sem estoque</td>");
-            else
-                //colocar o href
-                writer.println("<td><a href=/addNoCarrinho/id=" + produto.getId() + ">Adicionar</a></td>");
+            writer.println("<th>Nome</th>");
+            writer.println("<th>Descrição</th>");
+            writer.println("<th>Preço</th>");
+            writer.println("<th>Estoque</th>");
+            writer.println("<th>Carrinho</th>");
             writer.println("</tr>");
+
+            for(Produto produto : listaDeProdutos){
+                writer.println("<tr>");
+                writer.println("<td>" + produto.getNome() + "</td>");
+                writer.println("<td>" + produto.getDescricao() + "</td>");
+                writer.println("<td>" + produto.getPreco() + "</td>");
+                writer.println("<td>" + produto.getEstoque() + "</td>");
+                if(produto.getEstoque() == 0)
+                    writer.println("<td>Sem estoque</td>");
+                else {
+                    //writer.println("<td><a href=/addNoCarrinho/id=" + produto.getId() + ">Adicionar</a></td>");
+                    writer.println("<td><a href=/addNoCarrinho/id=" + produto.getId() + " title='http://localhost:8080/MarketSistemApplication/addNoCarrinho?id=" + produto.getId() + "&comando=add'>Adicionar</a></td>");
+                    System.out.println("Estou no ListarProdutoController id " + produto.getId());
+                }
+                    //colocar o href
+
+                writer.println("</tr>");
+
+            }
+
+            writer.println("</table>");
+            writer.println("<a href='VerCarrinho'>Ver carrinho</a>");
+            writer.println("<br>");
+            writer.println("<a href='/redirectPortalCliente'>Retornar<a>");
+            writer.println("</body></html>");
+        }
+        else{
+            response.sendRedirect("login.html");
         }
 
-        writer.println("</table>");
-        writer.println("<a href='/VerCarrinho'>Ver carrinho</a>");
-        writer.println("<br>");
-        writer.println("<a href='/redirectPortalCliente'>Retornar<a>");
-        writer.println("</body></html>");
     }
 
     @GetMapping("/redirectPortalCliente")

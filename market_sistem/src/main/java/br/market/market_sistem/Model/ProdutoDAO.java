@@ -1,4 +1,7 @@
-package br.market.market_sistem;
+package br.market.market_sistem.Model;
+
+import br.market.market_sistem.Model.Conexao;
+import br.market.market_sistem.Model.Produto;
 
 import java.net.URISyntaxException;
 import java.sql.Connection;
@@ -53,4 +56,26 @@ public class ProdutoDAO {
         }
         return lista;
     }
+
+    public Produto getProdutoById(int id){
+        Connection connection = null;
+        PreparedStatement p = null;
+        ResultSet r = null;
+        Produto produto = null;
+        try{
+            connection = Conexao.getConnection();
+            p = connection.prepareStatement("SELECT * FROM Produto WHERE id_produto = ?");
+            p.setInt(1, id);
+            r = p.executeQuery();
+
+            while(r.next()){
+                Produto pr = new Produto(r.getInt("id_produto"), r.getFloat("preco"), r.getString("nome"), r.getString("descricao"), r.getInt("estoque"));
+                produto = pr;
+            }
+        }catch(SQLException | URISyntaxException exception){
+            throw new RuntimeException("Erro ao buscar produto", exception);
+        }
+        return produto;
+    }
+
 }

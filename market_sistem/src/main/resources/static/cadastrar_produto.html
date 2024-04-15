@@ -12,10 +12,10 @@
         </header>
 
         <form action="/cadastrarProduto" method="post" style="display: flex; flex-direction: column; align-items: center; padding: 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
-            Nome do produto <input type="text" name="nome"><br>
-            Descrição <input type="text" name="descricao"><br>
-            Preço <input type="number" name="preco"><br>
-            Quantidade em estoque <input type="number" name="estoque"><br>
+            Nome do produto <input type="text" placeholder="Fone" name="nome" required><br>
+            Descrição <input type="text" placeholder="Fone bluetooth" name="descricao" required><br>
+            Preço <input type="number" placeholder="99.90" name="preco" min="1" step="0.01" required><br>
+            Quantidade em estoque <input type="number" placeholder="6" name="estoque" required><br>
             <button type="submit" style="margin-top: 2px; width: 80px; height: 30px; border: 1px solid #696969;border-radius: 3px; cursor: pointer">Cadastrar</button>
         </form>
         <a href="/redirectPortalLojista">Retornar</a>
