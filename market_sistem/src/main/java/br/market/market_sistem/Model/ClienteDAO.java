@@ -9,7 +9,7 @@ public class ClienteDAO {
 
     }
     
-    public boolean confirmClienteCredentials(String email, String password){
+    public Cliente confirmClienteCredentials(String email, String password){
         Connection connection = null;
         PreparedStatement p = null;
         ResultSet rs = null;
@@ -33,10 +33,7 @@ public class ClienteDAO {
                 //throw new RuntimeException("Erro ao buscar Cliente por email e senha", exception);
                 c = null;
         }
-        if(c != null){
-            return true;
-        }
-        return false;
+        return c;
     }
 
     public boolean checkEmailExistence(String email){
