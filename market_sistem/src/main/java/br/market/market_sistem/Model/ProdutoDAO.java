@@ -47,8 +47,8 @@ public class ProdutoDAO {
             r = p.executeQuery();
 
             while(r.next()){
-                Produto pr = new Produto(r.getInt("id_produto"), r.getFloat("preco"), r.getString("nome"), r.getString("descricao"), r.getInt("estoque"));
-                lista.add(pr);
+                Produto produto = new Produto(r.getInt("id_produto"), r.getFloat("preco"), r.getString("nome"), r.getString("descricao"), r.getInt("estoque"));
+                lista.add(produto);
             }
 
         }catch(SQLException | URISyntaxException exception){
@@ -77,5 +77,8 @@ public class ProdutoDAO {
         }
         return produto;
     }
+<<<<<<< HEAD:market_sistem/src/main/java/br/market/market_sistem/Model/ProdutoDAO.java
 
+=======
+>>>>>>> 369dcf1bc4a460483bbd6f96830825a475d53d07:market_sistem/src/main/java/br/market/market_sistem/ProdutoDAO.java
 }
