@@ -1,19 +1,13 @@
 package br.market.market_sistem.Controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
 import br.market.market_sistem.Model.Carrinho;
 import br.market.market_sistem.Model.Produto;
 import br.market.market_sistem.Model.ProdutoDAO;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jms.JmsProperties.Listener.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,180 +16,91 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class CarrinhoController {
 
-//    @Autowired
-    private Carrinho carrinho = new Carrinho();
-    //tentativa de salvar no cookie
     @GetMapping("/addNoCarrinho/{id}")
     public void addNoCarrinho(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        //decalrando o que vou precisar
         HttpSession session = request.getSession(false);
         Enumeration<String> email_session = session.getAttributeNames();
         String email_validado = email_session.nextElement();
-        Cookie[] cookies = request.getCookies();
-        List<String> carrinho = new ArrayList<String>();
-        carrinho.add(id.replaceAll("[^0-9]", ""));
-        //adicionando os cookies existentes ao arraylist e deletando os cookies
-        if(cookies != null){
-            for(Cookie cookie : cookies){
-                if(cookie.getName().equals(email_validado.replace("@", "-"))){
-                    String id_produto = cookie.getValue();
-                    carrinho.add(id_produto);
-                    cookie.setMaxAge(0);
+        Cookie[] cookies = request.getCookies();        
+        String carrinho = "";
+
+        if(session != null){
+            carrinho += (id.replaceAll("[^0-9]", "") + "_");
+
+            if(cookies != null){
+                for(Cookie cookie : cookies){
+                    if(cookie.getName().equals(email_validado.replace("@", "-"))){
+                        String id_produto = cookie.getValue();
+                        carrinho += id_produto;
+                    }
                 }
             }
-        }
-        //adicionando um cookie derivado de cada elemneto do array list, incluindo o novo elemento adicionado
-        for(String id_produto : carrinho){
-            Cookie c = new Cookie(email_validado.replace("@", "-"), id_produto);
+            
+            Cookie c = new Cookie(email_validado.replace("@", "-"), carrinho);
             c.setMaxAge(48 * 60 * 60);
             response.addCookie(c);
-        }
-
-        response.sendRedirect("/listarProdutosCliente");
-    }
-    /*
-    
-//        int idInt = Integer.parseInt(id);
-//        Carrinho carrinho = new Carrinho();
-//        ProdutoDAO pDAO = new ProdutoDAO();
-//        carrinho.addProduto(pDAO.getProdutoById(idInt));
-//
-//        salvarCarrinhoNoCookie(carrinho, request, response);
-            // pegando apenas o valor que está vindo do PathVariable
-            String idS = id.replaceAll("[^0-9]", "");
-
-
-            // ou criamos um setId ou um construtor que apenas recebe o id
-            //Produto produto = new Produto(id);
-            //pega os ids dos produtos e adiciona no carrinho
-            // carrinho.addProduto(produto);
-
-
-            System.out.println("Estou no CarrinhoController id " + idS);
-            Produto produto = carrinho.getProduto(Integer.parseInt(idS));
-            System.out.println("Usando os metodos do carrinho " + produto);
-            ProdutoDAO pDAO = new ProdutoDAO();
-            produto = pDAO.getProdutoById(Integer.parseInt(idS));
-            System.out.println("Usando os metodos do produtoDAO " + produto);
-            if (produto != null) { // Verifica se o produto não é nulo antes de adicioná-lo
-                carrinho.addProduto(produto);
-            }else{
-                carrinho.addProduto(produto);
-            }
-            response.sendRedirect("/verCarrinho");
-
-
-            //System.out.println(carrinho.getProdutos());
-
-    }
-     */
-
-
-    public void salvarCarrinhoNoCookie(Carrinho carrinho, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        Cookie c = null;
-        Cookie[] cookies = request.getCookies();
-        //HttpSession session = request.getSession(false);
-
-
-        // conversao do carrinho list para string
-
-
-        if (cookies == null) {
-            c = new Cookie("carrinho", carrinho.toString());
-            c.setMaxAge(172800);
-            response.addCookie(c);
             response.sendRedirect("/listarProdutosCliente");
-        }
-        if (cookies != null) {
-
-            ArrayList<Produto> cookiesList;
-
-            for(int i = 0; i < cookies.length; i++){
-                if(cookies[i].getName().equals("carrinho")){
-                   //String valorCookie = cookies[i].getValue();
-                   //return new Gson().fromJson(cookies[i].getValue(), Carrinho.class);
-                }
-            }
-            response.sendRedirect("/listarProdutosCliente");
-        } else {
+        }else{
             response.sendRedirect("login.html");
         }
     }
 
-    @RequestMapping(value = "/verCarrinho", method = RequestMethod.GET)
-    public void verCarrinho(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-//        Cookie[] cookies = request.getCookies();
-//
-//        if (cookies != null) {
-//            // mostra carrinho criando html
-//
-//            var writer = response.getWriter();
-//            writer.println("<html><head><title>Página Carrinho</title><head><body style='display: flex; flex-direction: column; align-items: center;'><header 'margin-bottom: 20px;'><h1>Lista Carrinho</h1></header><br><table border='1' style='margin-top: 0px;'>");
-//            writer.println("<tr>");
-//            writer.println("<th>Nome</th>");
-//            writer.println("<th>Descrição</th>");
-//            writer.println("<th>Preço</th>");
-//            writer.println("<th>Quantidade</th>");
-//            writer.println("<th>Remover</th>");
-//            writer.println("</tr>");
-//
-//
-//            // mostrar os produtos apartir do cookie
-//            for (int i = 0; i < cookies.length; i++) {
-//
-//                if (cookies[i].getName().equals("carrinho")) {
-//                    String valorCookie = cookies[i].getValue();
-//                    int id = Integer.parseInt(valorCookie);
-//                    ProdutoDAO pDAO = new ProdutoDAO();
-//                    Produto p = pDAO.getProdutoById(id);
-//                    writer.println("<tr>");
-//                    writer.println("<td>" + p.getNome() + "</td>");
-//                    writer.println("<td>" + p.getDescricao() + "</td>");
-//                    writer.println("<td>" + p.getPreco() + "</td>");
-//                    writer.println("<td>" + p.getEstoque() + "</td>");
-//                    writer.println("<td><a href=/removerDoCarrinho/id=" + p.getId() + ">Remover</a></td>");
-//                }
-//                writer.println("</tr>");
-//            }
-//
-//            writer.println("</table>");
-//            writer.println("<a href='/listarProdutosCliente'>Ver Produtos</a>");
-//            writer.println("<br>");
-//            writer.println("<a href='/redirectPortalCliente'>Retornar<a>");
-//            writer.println("</body></html>");
-//
-//        } else {
-//            response.sendRedirect("/listarProdutosCliente");
-//        }
+    @GetMapping("/verCarrinho")
+    public void getCarrinhoCompras(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        HttpSession session = request.getSession(false);
 
+        if(session != null){
+            Carrinho c = new Carrinho();
+            Cookie[] cookies = request.getCookies();
+            Enumeration<String> email_session = session.getAttributeNames();
+            String email_validado = email_session.nextElement();
+            String id_produtos = "";
+            int id_inteiro;
+            ProdutoDAO pDAO = new ProdutoDAO();
 
-        // fazendo sozinha
+            if(cookies != null){
+                for(int i = 0 ; i < cookies.length; i++){
+                    if(cookies[i].getName().equals(email_validado)){
+                        id_produtos += cookies[i].getValue();
+                    }
+                }
+            }
+            // tratar ids : remover 4_2_1_1_4_
+            if(id_produtos != null){
+                String[] id_limpos = id_produtos.split("_");
+                for(String id : id_limpos){
+                    try{
+                        // converter para int
+                        id_inteiro = Integer.parseInt(id);
+                        // buscar no bd o produto
+                        // add no Carrinho
+                        c.addProduto(pDAO.getProdutoById(id_inteiro));
+                    }catch(NumberFormatException exception){
+                        exception.printStackTrace();
+                    }
+                }
+            }
 
-        ArrayList<Produto> listaCarrinho = carrinho.getProdutos();
+            // exibir no writer
 
-        var writer = response.getWriter();
-            writer.println("<html><head><title>Página Carrinho</title><head><body style='display: flex; flex-direction: column; align-items: center;'><header 'margin-bottom: 20px;'><h1>Lista Carrinho</h1></header><br><table border='1' style='margin-top: 0px;'>");
+            var writer = response.getWriter();
+            writer.println("<html><head><title>Carrinho de produtos</title><head><body style='display: flex; flex-direction: column; align-items: center;'><header 'margin-bottom: 20px;'><h1>Lista Carrinho</h1></header><br><table border='1' style='margin-top: 0px;'>");
             writer.println("<tr>");
             writer.println("<th>Nome</th>");
             writer.println("<th>Descrição</th>");
             writer.println("<th>Preço</th>");
-            writer.println("<th>Quantidade</th>");
+            writer.println("<th>Estoque</th>");
             writer.println("<th>Remover</th>");
             writer.println("</tr>");
 
-            // mostrar os produtos apartir do cookie
-            for (Produto produto : listaCarrinho) {
-                    if(produto != null){
-                        writer.println("<tr>");
-                        writer.println("<td>" + produto.getNome() + "</td>");
-                        writer.println("<td>" + produto.getDescricao() + "</td>");
-                        writer.println("<td>" + produto.getPreco() + "</td>");
-                        writer.println("<td>" + produto.getEstoque() + "</td>");
-                        writer.println("<td><a href=/removerDoCarrinho/id=" + produto.getId() + ">Remover</a></td>");
-                    }
-
-
+            for(Produto produto : c.getProdutos()){
+                writer.println("<tr>");
+                writer.println("<td>" + produto.getNome() + "</td>");
+                System.out.println(produto.getNome());
+                writer.println("<td>" + produto.getDescricao() + "</td>");
+                writer.println("<td>" + produto.getPreco() + "</td>");
+                writer.println("<td>" + produto.getEstoque() + "</td>");
+                writer.println("<td><a href=/removerDoCarrinho/id=" + produto.getId() + " title='http://localhost:8080/MarketSistemApplication/removerDoCarrinho?id=" + produto.getId() + "&comando=add'>Remover</a></td>");
 
                 writer.println("</tr>");
             }
@@ -205,12 +110,19 @@ public class CarrinhoController {
             writer.println("<br>");
             writer.println("</body></html>");
 
-//            RequestDispatcher dispatcher = request.getRequestDispatcher("/listarProdutosCliente");
-//            dispatcher.forward(request, response);
-        }
+            /*    
+            for(int i = 0; i < id_produtos.length(); i++){    
+                if(id_produtos.charAt(i) != "_"){
+                    if(id_produtos.charAt(i+1) == "_"){
+                        id_limpo = Integer.parseInt(id_produtos.charAt(i));
+                    }
+                }
+            }
+            */
 
-//        else {
-//            response.sendRedirect("/listarProdutosCliente");
-//        }
+        }else{
+            response.sendRedirect("login.html");
+        }
+    }
 
 }
