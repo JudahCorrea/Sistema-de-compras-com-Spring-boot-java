@@ -124,7 +124,7 @@ public class ListarProdutoController {
             }
 
             writer.println("</table>");
-            writer.println("<a href='VerCarrinho'>Ver carrinho</a>");
+            writer.println("<a href='/verCarrinho'>Ver carrinho</a>");
             writer.println("<br>");
             writer.println("<a href='/redirectPortalCliente'>Retornar<a>");
             writer.println("</body></html>");
