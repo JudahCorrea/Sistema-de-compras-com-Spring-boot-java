@@ -96,17 +96,6 @@ public class CarrinhoController {
                 c.setMaxAge(48 * 60 * 60);
                 c.setPath("/");
                 response.addCookie(c);
-                /*
-                for(Cookie cookie : cookies){
-                    //pega novamente o cookie 
-                    if(cookie.getName().equals(email_validado.replace("@","-"))){
-                        //sobrescreve com o novo valor
-                        cookie.setAttribute(email_validado.replace("@","-"),carrinho);
-                        response.addCookie(cookie);
-                    }
-                }                
-                 */
-
             }
             response.sendRedirect("/verCarrinho");
         }else{
