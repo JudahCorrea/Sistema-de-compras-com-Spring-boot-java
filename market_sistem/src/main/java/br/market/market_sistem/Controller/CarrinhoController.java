@@ -81,17 +81,17 @@ public class CarrinhoController {
                         for(String id_produto : id_produtos){
                             if(!id_produto.isEmpty()){
                                 if(!removeu){
-                                    //remove id do carrinho (cookie)
+                                //remove id do carrinho (cookie)
                                     if(id_produto.equals(id_remove)){
                                         id_produto = "";
                                         removeu = true;
                                         continue;
-                                    }
+                                }
                                 }
                                 //adiciona id remanecentes ao novo carrinho
                                 carrinho += (id_produto + "_");
                             }
-                        }
+                        }        
                     }
                 }
                 Cookie c = new Cookie(email_validado.replace("@","-"),carrinho);
@@ -115,6 +115,7 @@ public class CarrinhoController {
             Cookie[] cookies = request.getCookies();
             Enumeration<String> email_session = session.getAttributeNames();
             String email_validado = email_session.nextElement();
+            float total = 0;
 
             //guardando
             HashMap<Integer, Integer> idQuantidades = new HashMap<>();
@@ -165,11 +166,13 @@ public class CarrinhoController {
                     writer.println("<td>" + quantidade + "</td>");
                     writer.println("<td><a href='/removeDoCarrinho/id=" + produto.getId() + " title='http://localhost:8080/MarketSistemApplication/removeDoCarrinho?id= "+ produto.getId() + ">Remover</a></td>");
                     writer.println("</tr>");
+                    total += (quantidade * produto.getPreco());
                 }
             }
 
             writer.println("</table>");
             writer.println("<a href='/listarProdutosCliente'>Ver Produtos</a>");
+            writer.println("<p><h3>Valor Total da Compra R$: <h3>"+ total +"</p>");
             writer.println("<form action='/finalizaCompra'><button type='submit'>Finalizar compra</button></form>");
             writer.println("<br>");
             writer.println("</body></html>");
@@ -204,6 +207,7 @@ public class CarrinhoController {
                                     Produto p = pDAO.getProdutoById(id);
                                     p.diminuiEstoque();
                                     pDAO.atualizarProduto(p);
+
                                 } catch (NumberFormatException exception) {
                                     exception.printStackTrace();
                                 } 
@@ -211,7 +215,12 @@ public class CarrinhoController {
                         }
                     }
                 }
+
             }
+            Cookie c = new Cookie(email_validado.replace("@","-"),"");
+            c.setMaxAge(0);
+            c.setPath("/");
+            response.addCookie(c);
             response.sendRedirect("/listarProdutosCliente");
         }
     }
