@@ -3,6 +3,9 @@ package br.market.market_sistem.Controller;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+
 import br.market.market_sistem.Model.Carrinho;
 import br.market.market_sistem.Model.Produto;
 import br.market.market_sistem.Model.ProdutoDAO;
@@ -13,6 +16,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import javax.sound.midi.SysexMessage;
 
 @Controller
 public class CarrinhoController {
@@ -30,9 +35,20 @@ public class CarrinhoController {
 
             if(cookies != null){
                 for(Cookie cookie : cookies){
-                    if(cookie.getName().equals(email_validado.replace("@", "-"))){
-                        String id_produto = cookie.getValue();
-                        carrinho += id_produto;
+                    if (cookie.getName().equals(email_validado.replace("@", "-"))) {
+                        String[] produtos = cookie.getValue().split("_");
+                        boolean produtoJaAdicionado = false;
+                        for (String produto : produtos) {
+                            if (!produto.isEmpty()) {
+                                if (produto.equals(id)) {
+                                    produtoJaAdicionado = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!produtoJaAdicionado) {
+                            carrinho += cookie.getValue();
+                        }
                     }
                 }
             }
@@ -54,6 +70,7 @@ public class CarrinhoController {
 
 
 
+
     @GetMapping("/verCarrinho")
     public void getCarrinhoCompras(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession(false);
@@ -64,37 +81,31 @@ public class CarrinhoController {
             Enumeration<String> email_session = session.getAttributeNames();
             String email_validado = email_session.nextElement();
 
-            String id_produtos = "";
-            int id_inteiro;
+            // aguardando
+            HashMap<Integer, Integer> idQuantidades = new HashMap<>();
             ProdutoDAO pDAO = new ProdutoDAO();
 
             if(cookies != null){
                 for(Cookie cookie : cookies){
-                    if(cookie.getName().equals(email_validado.replace("@", "-")))
-                        id_produtos += cookie.getValue();
-                }
-            }
-
-            // tratar ids
-            if(id_produtos != ""){
-                String[] id_limpos = id_produtos.split("_");
-
-                for(int i = 0; i < id_limpos.length; i++){
-                    if(!id_limpos[i].isEmpty()){
-                        try{
-                            // converter para int
-                            id_inteiro = Integer.parseInt(id_limpos[i]);
-                            // buscar o produto no bd
-                            // add no carrinho
-                            carrinho.addProduto(pDAO.getProdutoById(id_inteiro));
-                        }catch(NumberFormatException exception){
-                            exception.printStackTrace();
+                    if(cookie.getName().equals(email_validado.replace("@", "-"))) {
+                        String[] idProdutos = cookie.getValue().split("_");
+                        for(String idProduto : idProdutos) {
+                            if(!idProduto.isEmpty()) {
+                                try {
+                                    int id = Integer.parseInt(idProduto);
+                                    if (idQuantidades.containsKey(id)) {
+                                        idQuantidades.put(id, idQuantidades.get(id) + 1);
+                                    } else {
+                                        idQuantidades.put(id, 1);
+                                    }
+                                } catch(NumberFormatException exception) {
+                                    exception.printStackTrace();
+                                }
+                            }
                         }
                     }
                 }
             }
-
-            // exibir com writer
 
             var writer = response.getWriter();
             writer.println("<html><head><title>Carrinho de produtos</title><head><body style='display: flex; flex-direction: column; align-items: center;'><header 'margin-bottom: 20px;'><h1>Lista Carrinho</h1></header><br><table border='1' style='margin-top: 0px;'>");
@@ -102,19 +113,24 @@ public class CarrinhoController {
             writer.println("<th>Nome</th>");
             writer.println("<th>Descrição</th>");
             writer.println("<th>Preço</th>");
-            writer.println("<th>Estoque</th>");
+            writer.println("<th>Quantidade</th>");
             writer.println("<th>Remover</th>");
             writer.println("</tr>");
 
-            for(Produto produto : carrinho.getProdutos()){
-                writer.println("<tr>");
-                writer.println("<td>" + produto.getNome() + "</td>");
-                writer.println("<td>" + produto.getDescricao() + "</td>");
-                writer.println("<td>" + produto.getPreco() + "</td>");
-                writer.println("<td>" + produto.getEstoque() + "</td>");
-                writer.println("<td><a href=/removeDoCarrinho/id=" + produto.getId() + " title='http://localhost:8080/MarketSistemApplication/removeDoCarrinho?id=" + produto.getId() + "&comando=remove'>Remover</a></td>");
+            for(Map.Entry<Integer, Integer> entry : idQuantidades.entrySet()) {
+                int id = entry.getKey();
+                int quantidade = entry.getValue();
+                Produto produto = pDAO.getProdutoById(id);
 
-                writer.println("</tr>");
+                if (produto != null) {
+                    writer.println("<tr>");
+                    writer.println("<td>" + produto.getNome() + "</td>");
+                    writer.println("<td>" + produto.getDescricao() + "</td>");
+                    writer.println("<td>" + produto.getPreco() + "</td>");
+                    writer.println("<td>" + quantidade + "</td>");
+                    writer.println("<td><a href='/removeDoCarrinho/" + produto.getId() + " title='http://localhost:8080/MarketSistemApplication/removeDoCarrinho?id= "+ produto.getId() + "&comando=remove'>Remover</a></td>");
+                    writer.println("</tr>");
+                }
             }
 
             writer.println("</table>");
@@ -122,8 +138,9 @@ public class CarrinhoController {
             writer.println("<br>");
             writer.println("</body></html>");
 
-        }else{
+        } else {
             response.sendRedirect("login.html");
         }
     }
+
 }
