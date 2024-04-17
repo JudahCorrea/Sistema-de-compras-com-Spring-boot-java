@@ -8,6 +8,7 @@ import br.market.market_sistem.Model.Carrinho;
 import br.market.market_sistem.Model.Produto;
 import br.market.market_sistem.Model.ProdutoDAO;
 import jakarta.servlet.ServletException;
+import jakarta.websocket.server.PathParam;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.Cookie;
@@ -17,6 +18,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class CarrinhoController {
+
 
     @GetMapping("/addNoCarrinho/{id}")
     public void adicionarNoCarrinho(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -96,17 +98,6 @@ public class CarrinhoController {
                 c.setMaxAge(48 * 60 * 60);
                 c.setPath("/");
                 response.addCookie(c);
-                /*
-                for(Cookie cookie : cookies){
-                    //pega novamente o cookie 
-                    if(cookie.getName().equals(email_validado.replace("@","-"))){
-                        //sobrescreve com o novo valor
-                        cookie.setAttribute(email_validado.replace("@","-"),carrinho);
-                        response.addCookie(cookie);
-                    }
-                }                
-                 */
-
             }
             response.sendRedirect("/verCarrinho");
         }else{
@@ -125,7 +116,7 @@ public class CarrinhoController {
             Enumeration<String> email_session = session.getAttributeNames();
             String email_validado = email_session.nextElement();
 
-            // aguardando
+            //guardando
             HashMap<Integer, Integer> idQuantidades = new HashMap<>();
             ProdutoDAO pDAO = new ProdutoDAO();
 
@@ -170,7 +161,7 @@ public class CarrinhoController {
                     writer.println("<tr>");
                     writer.println("<td>" + produto.getNome() + "</td>");
                     writer.println("<td>" + produto.getDescricao() + "</td>");
-                    writer.println("<td>" + produto.getPreco() + "</td>");
+                    writer.println("<td>" + "<p>R$ " + produto.getPreco() + "</p>"+ "</td>");
                     writer.println("<td>" + quantidade + "</td>");
                     writer.println("<td><a href='/removeDoCarrinho/id=" + produto.getId() + " title='http://localhost:8080/MarketSistemApplication/removeDoCarrinho?id= "+ produto.getId() + ">Remover</a></td>");
                     writer.println("</tr>");
@@ -179,6 +170,7 @@ public class CarrinhoController {
 
             writer.println("</table>");
             writer.println("<a href='/listarProdutosCliente'>Ver Produtos</a>");
+            writer.println("<form action='/finalizaCompra'><button type='submit'>Finalizar compra</button></form>");
             writer.println("<br>");
             writer.println("</body></html>");
 
@@ -187,4 +179,40 @@ public class CarrinhoController {
         }
     }
 
+    @GetMapping("/finalizaCompra")
+    public void finalizarCompra(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            //Carrinho carrinho = new Carrinho();
+            Cookie[] cookies = request.getCookies();
+            Enumeration<String> email_session = session.getAttributeNames();
+            String email_validado = email_session.nextElement();
+
+            // guardando
+
+            ProdutoDAO pDAO = new ProdutoDAO();
+            //Produto p = new Produto();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals(email_validado.replace("@", "-"))) {
+                        String[] idProdutos = cookie.getValue().split("_");
+                        for (String idProduto : idProdutos) {
+                            if (!idProduto.isEmpty()) {
+                                try {
+                                    int id = Integer.parseInt(idProduto);
+                                    Produto p = pDAO.getProdutoById(id);
+                                    p.diminuiEstoque();
+                                    pDAO.atualizarProduto(p);
+                                } catch (NumberFormatException exception) {
+                                    exception.printStackTrace();
+                                } 
+                            }
+                        }
+                    }
+                }
+            }
+            response.sendRedirect("/listarProdutosCliente");
+        }
+    }
 }
