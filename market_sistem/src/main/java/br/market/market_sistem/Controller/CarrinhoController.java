@@ -80,9 +80,10 @@ public class CarrinhoController {
                             if(!id_produto.isEmpty()){
                                 if(!removeu){
                                     //remove id do carrinho (cookie)
-                                    if(id_produto == id_remove){
+                                    if(id_produto.equals(id_remove)){
                                         id_produto = "";
                                         removeu = true;
+                                        continue;
                                     }
                                 }
                                 //adiciona id remanecentes ao novo carrinho
@@ -91,6 +92,11 @@ public class CarrinhoController {
                         }
                     }
                 }
+                Cookie c = new Cookie(email_validado.replace("@","-"),carrinho);
+                c.setMaxAge(48 * 60 * 60);
+                c.setPath("/");
+                response.addCookie(c);
+                /*
                 for(Cookie cookie : cookies){
                     //pega novamente o cookie 
                     if(cookie.getName().equals(email_validado.replace("@","-"))){
@@ -98,15 +104,15 @@ public class CarrinhoController {
                         cookie.setAttribute(email_validado.replace("@","-"),carrinho);
                         response.addCookie(cookie);
                     }
-                }
+                }                
+                 */
+
             }
             response.sendRedirect("/verCarrinho");
         }else{
             response.sendRedirect("login.html");
         }
     }
-
-
 
 
     @GetMapping("/verCarrinho")
