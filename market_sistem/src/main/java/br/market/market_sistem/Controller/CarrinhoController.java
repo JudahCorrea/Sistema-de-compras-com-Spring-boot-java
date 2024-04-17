@@ -1,11 +1,9 @@
 package br.market.market_sistem.Controller;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-
 import br.market.market_sistem.Model.Carrinho;
 import br.market.market_sistem.Model.Produto;
 import br.market.market_sistem.Model.ProdutoDAO;
@@ -16,8 +14,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import javax.sound.midi.SysexMessage;
 
 @Controller
 public class CarrinhoController {
@@ -65,7 +61,49 @@ public class CarrinhoController {
 
     @GetMapping("/removeDoCarrinho/{id}")
     public void removerDoCarrinho(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession(false);
+        Enumeration<String> email_session = session.getAttributeNames();
+        String email_validado = email_session.nextElement();
+        String carrinho = "";
+        String id_remove = id.replaceAll("[^0-9]","");
 
+        if(session != null){
+            //pegar cookies
+            Cookie[] cookies = request.getCookies();
+            if(cookies != null){
+                for(Cookie cookie : cookies){
+                    if(cookie.getName().equals(email_validado.replace("@","-"))){
+                        String[] id_produtos = cookie.getValue().split("_");
+                        boolean removeu = false;
+                        //mapeando ids para construção do novo trem de id`s
+                        for(String id_produto : id_produtos){
+                            if(!id_produto.isEmpty()){
+                                if(!removeu){
+                                    //remove id do carrinho (cookie)
+                                    if(id_produto == id_remove){
+                                        id_produto = "";
+                                        removeu = true;
+                                    }
+                                }
+                                //adiciona id remanecentes ao novo carrinho
+                                carrinho += (id_produto + "_");
+                            }
+                        }
+                    }
+                }
+                for(Cookie cookie : cookies){
+                    //pega novamente o cookie 
+                    if(cookie.getName().equals(email_validado.replace("@","-"))){
+                        //sobrescreve com o novo valor
+                        cookie.setAttribute(email_validado.replace("@","-"),carrinho);
+                        response.addCookie(cookie);
+                    }
+                }
+            }
+            response.sendRedirect("/verCarrinho");
+        }else{
+            response.sendRedirect("login.html");
+        }
     }
 
 
@@ -128,7 +166,7 @@ public class CarrinhoController {
                     writer.println("<td>" + produto.getDescricao() + "</td>");
                     writer.println("<td>" + produto.getPreco() + "</td>");
                     writer.println("<td>" + quantidade + "</td>");
-                    writer.println("<td><a href='/removeDoCarrinho/" + produto.getId() + " title='http://localhost:8080/MarketSistemApplication/removeDoCarrinho?id= "+ produto.getId() + "&comando=remove'>Remover</a></td>");
+                    writer.println("<td><a href='/removeDoCarrinho/id=" + produto.getId() + " title='http://localhost:8080/MarketSistemApplication/removeDoCarrinho?id= "+ produto.getId() + ">Remover</a></td>");
                     writer.println("</tr>");
                 }
             }
