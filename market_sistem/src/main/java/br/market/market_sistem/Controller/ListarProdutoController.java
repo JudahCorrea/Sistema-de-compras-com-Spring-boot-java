@@ -109,7 +109,7 @@ public class ListarProdutoController {
                 writer.println("<tr>");
                 writer.println("<td>" + produto.getNome() + "</td>");
                 writer.println("<td>" + produto.getDescricao() + "</td>");
-                writer.println("<td>" + produto.getPreco() + "</td>");
+                writer.println("<td>" + "<p>R$ " + produto.getPreco() + "</p>"+ "</td>");
                 writer.println("<td>" + produto.getEstoque() + "</td>");
                 if(produto.getEstoque() == 0)
                     writer.println("<td>Sem estoque</td>");

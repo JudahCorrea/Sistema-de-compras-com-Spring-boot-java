@@ -32,6 +32,22 @@ public class ProdutoDAO {
         }
     }
 
+    public void atualizarProduto(Produto produto){
+        Connection connection = null;
+        PreparedStatement p = null;
+
+        try{
+            connection = Conexao.getConnection();
+            p = connection.prepareStatement("UPDATE Produto SET estoque=? WHERE id_produto=?");
+            p.setFloat(1, produto.getEstoque());
+            p.setInt(2, produto.getId());
+            p.executeUpdate();
+            connection.close();
+        }catch(SQLException | URISyntaxException exception){
+            throw new RuntimeException("Erro ao atualizar produto", exception);
+        }
+    }
+
     public List<Produto> listarProdutos(){
         Connection connection = null;
         PreparedStatement p = null;
