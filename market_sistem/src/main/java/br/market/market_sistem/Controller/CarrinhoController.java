@@ -79,17 +79,17 @@ public class CarrinhoController {
                         for(String id_produto : id_produtos){
                             if(!id_produto.isEmpty()){
                                 if(!removeu){
-                                    //remove id do carrinho (cookie)
+                                //remove id do carrinho (cookie)
                                     if(id_produto.equals(id_remove)){
                                         id_produto = "";
                                         removeu = true;
                                         continue;
-                                    }
+                                }
                                 }
                                 //adiciona id remanecentes ao novo carrinho
                                 carrinho += (id_produto + "_");
                             }
-                        }
+                        }        
                     }
                 }
                 Cookie c = new Cookie(email_validado.replace("@","-"),carrinho);
