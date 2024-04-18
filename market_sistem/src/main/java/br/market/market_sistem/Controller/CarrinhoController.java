@@ -115,7 +115,7 @@ public class CarrinhoController {
             Cookie[] cookies = request.getCookies();
             Enumeration<String> email_session = session.getAttributeNames();
             String email_validado = email_session.nextElement();
-            float total = 0;
+            float totalCompra = 0;
 
             //guardando
             HashMap<Integer, Integer> idQuantidades = new HashMap<>();
@@ -125,8 +125,8 @@ public class CarrinhoController {
                 for(Cookie cookie : cookies){
                     if(cookie.getName().equals(email_validado.replace("@", "-"))) {
                         String[] idProdutos = cookie.getValue().split("_");
-                        for(String idProduto : idProdutos) {
-                            if(!idProduto.isEmpty()) {
+                        for (String idProduto : idProdutos) {
+                            if (!idProduto.isEmpty()) {
                                 try {
                                     int id = Integer.parseInt(idProduto);
                                     if (idQuantidades.containsKey(id)) {
@@ -134,7 +134,7 @@ public class CarrinhoController {
                                     } else {
                                         idQuantidades.put(id, 1);
                                     }
-                                } catch(NumberFormatException exception) {
+                                } catch (NumberFormatException exception) {
                                     exception.printStackTrace();
                                 }
                             }
@@ -166,13 +166,13 @@ public class CarrinhoController {
                     writer.println("<td>" + quantidade + "</td>");
                     writer.println("<td><a href='/removeDoCarrinho/id=" + produto.getId() + " title='http://localhost:8080/MarketSistemApplication/removeDoCarrinho?id= "+ produto.getId() + ">Remover</a></td>");
                     writer.println("</tr>");
-                    total += (quantidade * produto.getPreco());
+                    totalCompra += (quantidade * produto.getPreco());
                 }
             }
 
             writer.println("</table>");
             writer.println("<a href='/listarProdutosCliente'>Ver Produtos</a>");
-            writer.println("<p><h3>Valor Total da Compra R$: <h3>"+ total +"</p>");
+            writer.println("<p><h3>Valor Total da Compra R$: </h3>"+ totalCompra +"</p>");
             writer.println("<form action='/finalizaCompra'><button type='submit'>Finalizar compra</button></form>");
             writer.println("<br>");
             writer.println("</body></html>");
@@ -210,14 +210,14 @@ public class CarrinhoController {
 
                                 } catch (NumberFormatException exception) {
                                     exception.printStackTrace();
-                                } 
+                                }
                             }
                         }
                     }
                 }
 
             }
-            Cookie c = new Cookie(email_validado.replace("@","-"),"");
+            Cookie c = new Cookie(email_validado.replace("@","-"),null);
             c.setMaxAge(0);
             c.setPath("/");
             response.addCookie(c);
