@@ -65,10 +65,10 @@ public class ListarProdutoController {
 
         for(Produto produto : listaDeProdutos){
             writer.println("<tr>");
-            writer.println("<td>"+ produto.getNome());
-            writer.println("<td>"+ produto.getDescricao());
-            writer.println("<td>"+ produto.getPreco());
-            writer.println("<td>"+ produto.getEstoque());
+            writer.println("<td>" + produto.getNome() + "</td>");
+            writer.println("<td>" + produto.getDescricao() + "</td>");
+            writer.println("<td>" + "<p>R$ " + produto.getPreco() + "</p>"+ "</td>");
+            writer.println("<td>" + produto.getEstoque() + "</td>");
             writer.println("</tr>");
         }
         writer.println("</table>");
@@ -125,7 +125,7 @@ public class ListarProdutoController {
 
 
             writer.println("</table>");
-            writer.println("<a href='/verCarrinho' style='text-align: left;'>Ver carrinho</a>");
+            writer.println("<a href='/verCarrinho'>Ver carrinho</a>");
             writer.println("<br>");
             writer.println("<a href='/redirectPortalCliente'>Retornar<a>");
             writer.println("</body></html>");
